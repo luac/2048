@@ -1,4 +1,12 @@
-function KeyboardInputManager() {
+function KeyboardInputManager(parent) {
+  this.parent = parent;
+  if (parent.label) {
+    this.keyStyle = parent.label;
+  }
+  else {
+    this.keyStyle = "all";
+  }
+
   this.events = {};
 
   if (window.navigator.msPointerEnabled) {
@@ -34,20 +42,36 @@ KeyboardInputManager.prototype.emit = function (event, data) {
 KeyboardInputManager.prototype.listen = function () {
   var self = this;
 
-  var map = {
-    38: 0, // Up
-    39: 1, // Right
-    40: 2, // Down
-    37: 3, // Left
-    75: 0, // vim keybindings
-    76: 1,
-    74: 2,
-    72: 3,
-    87: 0, // W
-    68: 1, // D
-    83: 2, // S
-    65: 3  // A
-  };
+  var map = {};
+  var restart = {};
+  if (this.keyStyle == "arrows" || this.keyStyle == "all") {
+    map[38] = 0; // Up
+    map[39] = 1; // Right
+    map[40] = 2; // Down
+    map[37] = 3; // Left
+    restart[51] = true; // 3
+  }
+  if (this.keyStyle == "vim" || this.keyStyle == "all") {
+    map[75] = 0; // vim keybindings
+    map[76] = 1;
+    map[74] = 2;
+    map[72] = 3;
+    restart[50] = true; // 2
+  }
+  if (this.keyStyle == "wasd" || this.keyStyle == "all") {
+    map[87] = 0; // W
+    map[68] = 1; // D
+    map[83] = 2; // S
+    map[65] = 3; // A
+    restart[49] = true; // 1
+  }
+  if (true) {
+    map[67] = 0; // C
+    map[86] = 1; // V
+    map[88] = 2; // X
+    map[90] = 3; // Z
+    restart[32] = true; // space
+  }
 
   document.addEventListener("keydown", function (event) {
     var modifiers = event.altKey || event.ctrlKey || event.metaKey ||
@@ -60,7 +84,7 @@ KeyboardInputManager.prototype.listen = function () {
         self.emit("move", mapped);
       }
 
-      if (event.which === 32) self.restart.bind(self)(event);
+      if (restart[event.which]) self.restart.bind(self)(event);
     }
   });
 
