@@ -1,8 +1,15 @@
-function HTMLActuator() {
-  this.tileContainer    = document.querySelector(".tile-container");
-  this.scoreContainer   = document.querySelector(".score-container");
+function HTMLActuator(parent) {
+  this.parent = parent;
+  if (parent.label) {
+    var selector = "." + parent.label;
+  }
+  else {
+    var selector = "";
+  }
+  this.tileContainer    = document.querySelector(".tile-container" + selector);
+  this.scoreContainer   = document.querySelector(".score-container" + selector);
   this.bestContainer    = document.querySelector(".best-container");
-  this.messageContainer = document.querySelector(".game-message");
+  this.messageContainer = document.querySelector(".game-message" + selector);
 
   this.score = 0;
 }
