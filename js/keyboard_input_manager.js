@@ -88,11 +88,18 @@ KeyboardInputManager.prototype.listen = function () {
     }
   });
 
-  var retry = document.querySelector(".retry-button");
+  if (this.parent.label) {
+    var selector = "." + this.parent.label;
+  }
+  else {
+    var selector = "";
+  }
+
+  var retry = document.querySelector(".retry-button" + selector);
   retry.addEventListener("click", this.restart.bind(this));
   retry.addEventListener(this.eventTouchend, this.restart.bind(this));
 
-  var keepPlaying = document.querySelector(".keep-playing-button");
+  var keepPlaying = document.querySelector(".keep-playing-button" + selector);
   keepPlaying.addEventListener("click", this.keepPlaying.bind(this));
   keepPlaying.addEventListener("touchend", this.keepPlaying.bind(this));
 
