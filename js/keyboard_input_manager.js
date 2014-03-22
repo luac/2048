@@ -84,7 +84,10 @@ KeyboardInputManager.prototype.listen = function () {
         self.emit("move", mapped);
       }
 
-      if (restart[event.which]) self.restart.bind(self)(event);
+      if (restart[event.which]) self.restart.bind(self)(event, 2048);
+    }
+    else if (event.shiftKey && !(event.altKey || event.ctrlKey || event.metaKey)) {
+      if (restart[event.which]) self.restart.bind(self)(event, 2584);
     }
   });
 
@@ -150,9 +153,9 @@ KeyboardInputManager.prototype.listen = function () {
   });
 };
 
-KeyboardInputManager.prototype.restart = function (event) {
+KeyboardInputManager.prototype.restart = function (event, mode) {
   event.preventDefault();
-  this.emit("restart");
+  this.emit("restart", mode);
 };
 
 KeyboardInputManager.prototype.keepPlaying = function (event) {
