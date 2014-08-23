@@ -52,10 +52,14 @@ KeyboardInputManager.prototype.listen = function () {
     restart[51] = true; // 3
   }
   if (this.keyStyle == "vim" || this.keyStyle == "all") {
-    map[75] = 0; // vim keybindings
-    map[76] = 1;
-    map[74] = 2;
-    map[72] = 3;
+    map[73] = 0; // I
+    map[76] = 1; // L
+    map[75] = 2; // K
+    map[74] = 3; // J
+    // map[75] = 0; // vim keybindings: K
+    // map[76] = 1; // L
+    // map[74] = 2; // J
+    // map[72] = 3; // H
     restart[50] = true; // 2
   }
   if (this.keyStyle == "wasd" || this.keyStyle == "all") {
