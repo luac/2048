@@ -85,6 +85,7 @@ KeyboardInputManager.prototype.listen = function () {
       }
 
       if (restart[event.which]) self.restart.bind(self)(event, 2048);
+      else if (event.which === 89) self.restart.bind(self)(event, "battle"); // Y
     }
     else if (event.shiftKey && !(event.altKey || event.ctrlKey || event.metaKey)) {
       if (restart[event.which]) self.restart.bind(self)(event, 2584);

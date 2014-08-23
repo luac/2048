@@ -8,6 +8,7 @@ function GameManager(size, InputManager, Actuator, ScoreManager, label) {
   this.startTiles   = 2;
 
   this.mode         = 2048;
+  this.battle       = false;
 
   this.inputManager.on("move", this.move.bind(this));
   this.inputManager.on("restart", this.restart.bind(this));
@@ -18,8 +19,14 @@ function GameManager(size, InputManager, Actuator, ScoreManager, label) {
 
 // Restart the game
 GameManager.prototype.restart = function (mode) {
-  if (mode) {
+  console.log(mode);
+  if (mode === "battle") {
+    this.mode = 2048;
+    this.battle = true;
+  }
+  else if (mode) {
     this.mode = mode;
+    this.battle = false;
   }
   this.actuator.continue();
   this.setup();
@@ -152,6 +159,25 @@ GameManager.prototype.move = function (direction) {
 
           // The mighty 2048 tile
           if (merged.value === self.mode) self.won = true;
+
+          // Battle mode!
+          if (self.battle && merged.value >= 13) {
+            var opponents = window.gameManagers.filter(function (gm) {
+              return self !== gm && !gm.isGameTerminated();
+            });
+            var gm = opponents[Math.floor(Math.random() * opponents.length)];
+            gm.prepareTiles();
+            if (!gm.grid.cellsAvailable()) {
+              gm.over = true;
+            }
+            else {
+              gm.addRandomTile();
+              if (!gm.movesAvailable()) {
+                gm.over = true;
+              }
+            }
+            gm.actuate();
+          }
         } else {
           self.moveTile(tile, positions.farthest);
         }
